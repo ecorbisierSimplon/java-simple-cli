@@ -29,6 +29,16 @@ public class Cli {
 				output = System.getProperty("user.home");
 			} else if (command.equals("os")) {
 				output = System.getProperty("os.name") + " (" + System.getProperty("os.version") + ")";
+			} else if (command.startsWith("printenv")) {
+				String arguments = command.substring("printenv".length()).trim();
+				String[] argumentArray = arguments.split(" ");
+				output = System.getenv(argumentArray[0]);
+			} else if (command.startsWith("echo")) {
+				try {
+					String arguments = command.substring("echo".length()).trim();
+					output = arguments;
+				} catch (Exception e) {
+				}
 			} else {
 				output = "Command '" + command + "' not found.";
 			}
