@@ -33,16 +33,21 @@ public class Cli {
 				String arguments = command.substring("printenv".length()).trim();
 				String[] argumentArray = arguments.split(" ");
 				output = System.getenv(argumentArray[0]);
-			} else if (command.startsWith("echo")) {
-				String arguments = command.substring("echo".length()).trim();
+			} else if (command.startsWith("echo ")) {
+				String arguments = "";
+				if (!command.equals("echo ")) {
+					arguments = command.substring("echo ".length()).trim();
+				}
 				output = arguments;
+			} else if (command.equals("echo")) {
+				// output = NULL
 			} else {
 				output = "Command '" + command + "' not found.";
 			}
 
 			if (output != "")
 				System.out.println(output); // Print with new line (ln)
-			System.out.print(" > "); // Prompt
+			System.out.print("> "); // Prompt
 		}
 		// Forces exit of the while loop
 		scanner.close(); // Best practice, always close a stream when no more needed
