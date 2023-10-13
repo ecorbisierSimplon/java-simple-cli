@@ -5,7 +5,7 @@ public class Cli {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in); // Listen to the standard input (console)
 
-		String nomSession = System.getProperty("user.name");
+		String nomSession = System.getProperty("user.home");
 
 		System.out.print(nomSession + " > "); // Prompt
 		while (true) { // Infinite loop
