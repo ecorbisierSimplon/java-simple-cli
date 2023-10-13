@@ -12,36 +12,34 @@ public class Cli {
 		while (true) { // Infinite loop
 			String command = scanner.nextLine(); // Get input from console as a string
 			String output = ""; // A variable named output of type String
-			switch (command) {
-				case "exit":
-					// Forces exit of the while loop
-					scanner.close(); // Best practice, always close a stream when no more needed
-					System.out.println("Bye !");
-					return;
-				case "date":
-					LocalDate formattedDateNow = LocalDate.now();
-					System.out.println(formattedDateNow); // Print with new line (ln)
-					break;
-				case "time":
-					LocalTime formattedTimeNow = LocalTime.now();
-					System.out.println(formattedTimeNow); // Print with new line (ln)
-					break;
-				case "datetime":
-					LocalDateTime formattedDateTimeNow = LocalDateTime.now();
-					System.out.println(formattedDateTimeNow); // Print with new line (ln)
-					break;
-				case "useraccount":
-					output = System.getProperty("user.name");
-					break;
-				case "userhome":
-					output = System.getProperty("user.home");
-					break;
-				default:
-					output = "Command '" + command + "' not found.";
+			if (command.equals("exit")) {
+				break;
+			} else if (command.equals("date")) {
+				LocalDate formattedDateNow = LocalDate.now();
+				System.out.println(formattedDateNow); // Print with new line (ln)
+			} else if (command.equals("time")) {
+				LocalTime formattedTimeNow = LocalTime.now();
+				System.out.println(formattedTimeNow); // Print with new line (ln)
+			} else if (command.equals("datetime")) {
+				LocalDateTime formattedDateTimeNow = LocalDateTime.now();
+				System.out.println(formattedDateTimeNow); // Print with new line (ln)
+			} else if (command.equals("useraccount")) {
+				output = System.getProperty("user.name");
+			} else if (command.equals("userhome")) {
+				output = System.getProperty("user.home");
+			} else if (command.equals("os")) {
+				output = System.getProperty("os.name") + " (" + System.getProperty("os.version") + ")";
+			} else {
+				output = "Command '" + command + "' not found.";
 			}
-			System.out.println(output); // Print with new line (ln)
+
+			if (output != "")
+				System.out.println(output); // Print with new line (ln)
 			System.out.print(" > "); // Prompt
 		}
+		// Forces exit of the while loop
+		scanner.close(); // Best practice, always close a stream when no more needed
+		System.out.println("Bye !");
 
 	}
 
