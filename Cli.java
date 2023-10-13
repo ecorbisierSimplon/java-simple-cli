@@ -1,13 +1,17 @@
 import java.util.Scanner;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Cli {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in); // Listen to the standard input (console)
-		LocalDateTime today = LocalDateTime.now(); // Add date today
 
-		System.out.print(today + " > "); // Prompt
+		DateTimeFormatter formattedDateNow = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSSSS");
+		LocalDateTime today = LocalDateTime.now(); // Add date today
+		String dateNow = today.format(formattedDateNow);
+
+		System.out.print(dateNow + " > "); // Prompt
 		while (true) { // Infinite loop
 			String command = scanner.nextLine(); // Get input from console as a string
 			String output = ""; // A variable named output of type String
@@ -18,10 +22,10 @@ public class Cli {
 				output = "Command '" + command + "' not found.";
 			}
 			System.out.println(output); // Print with new line (ln)
-			System.out.print(today + " > "); // Prompt
+			System.out.print(dateNow + " > "); // Prompt
 		}
 		scanner.close(); // Best practice, always close a stream when no more needed
-		System.out.println("Bye Youyoun!");
+		System.out.println("Bye !");
 	}
 
 }
