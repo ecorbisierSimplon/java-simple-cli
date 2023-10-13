@@ -1,6 +1,7 @@
 import java.util.Scanner;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 
 public class Cli {
 
@@ -11,27 +12,37 @@ public class Cli {
 		while (true) { // Infinite loop
 			String command = scanner.nextLine(); // Get input from console as a string
 			String output = ""; // A variable named output of type String
-			if (command.equals("exit")) {
-				break; // Forces exit of the while loop
-			} else if (command.equals("date")) {
-				output = dateNow("date");
-			} else if (command.equals("time")) {
-				output = dateNow("time");
-			} else if (command.equals("datetime")) {
-				output = dateNow("");
-			} else if (command.equals("useraccount")) {
-				output = sessionName("name");
-			} else if (command.equals("userhome")) {
-				output = sessionName("");
-			} else {
-				// String concatenation
-				output = "Command '" + command + "' not found.";
+			switch (command) {
+				case "exit":
+					// Forces exit of the while loop
+					scanner.close(); // Best practice, always close a stream when no more needed
+					System.out.println("Bye !");
+					return;
+				case "date":
+					LocalDate formattedDateNow = LocalDate.now();
+					System.out.println(formattedDateNow); // Print with new line (ln)
+					break;
+				case "time":
+					LocalTime formattedTimeNow = LocalTime.now();
+					System.out.println(formattedTimeNow); // Print with new line (ln)
+					break;
+				case "datetime":
+					LocalDateTime formattedDateTimeNow = LocalDateTime.now();
+					System.out.println(formattedDateTimeNow); // Print with new line (ln)
+					break;
+				case "useraccount":
+					output = System.getProperty("user.name");
+					break;
+				case "userhome":
+					output = System.getProperty("user.home");
+					break;
+				default:
+					output = "Command '" + command + "' not found.";
 			}
 			System.out.println(output); // Print with new line (ln)
 			System.out.print(" > "); // Prompt
 		}
-		scanner.close(); // Best practice, always close a stream when no more needed
-		System.out.println("Bye !");
+
 	}
 
 	public static String sessionName(String value) {
@@ -39,24 +50,6 @@ public class Cli {
 			return System.getProperty("user.name");
 		}
 		return System.getProperty("user.home");
-	}
-
-	public static String dateNow(String timeVal) {
-		DateTimeFormatter formattedDateNow;
-		switch (timeVal) {
-			case "time":
-				formattedDateNow = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSSS");
-				break;
-			case "date":
-				formattedDateNow = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				break;
-			default:
-				formattedDateNow = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-				break;
-		}
-
-		LocalDateTime today = LocalDateTime.now(); // Add date today
-		return today.format(formattedDateNow);
 	}
 
 }
