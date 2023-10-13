@@ -34,11 +34,8 @@ public class Cli {
 				String[] argumentArray = arguments.split(" ");
 				output = System.getenv(argumentArray[0]);
 			} else if (command.startsWith("echo")) {
-				try {
-					String arguments = command.substring("echo".length()).trim();
-					output = arguments;
-				} catch (Exception e) {
-				}
+				String arguments = command.substring("echo".length()).trim();
+				output = arguments;
 			} else {
 				output = "Command '" + command + "' not found.";
 			}
