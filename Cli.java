@@ -7,7 +7,7 @@ public class Cli {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in); // Listen to the standard input (console)
 
-		DateTimeFormatter formattedDateNow = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter formattedDateNow = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 		LocalDateTime today = LocalDateTime.now(); // Add date today
 		String dateNow = today.format(formattedDateNow);
 
