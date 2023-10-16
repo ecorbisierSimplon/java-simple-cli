@@ -11,6 +11,7 @@ public class Cli {
 		System.out.print("> "); // Prompt
 		while (true) { // Infinite loop
 			String command = scanner.nextLine(); // Get input from console as a string
+			String[] commandArray = command.trim().split(" ", 2);
 			String output = ""; // A variable named output of type String
 			if (command.trim().equals("exit")) {
 				break;
@@ -37,22 +38,19 @@ public class Cli {
 				output = System.getProperty("os.name") + " (" + System.getProperty("os.version") + ")";
 				// Print os'information
 
-			} else if (command.startsWith("printenv ") || command.equals("printenv")) {
+			} else if (commandArray[0].equals("printenv")) {
 				// This command is used to reject printenv elements whose arguments are not
 				// spaced between printenv and the 1st argument.
-
-				if (!command.trim().equals("printenv")) { // Print value of environnement variable
-					String[] argumentArray = command.split(" ");
-					output = System.getenv(argumentArray[1]);
-				}
-				if (output == null) {
-					output = ""; // if environnement variable is null then transform output in argument empty
+				if (commandArray.length > 1) { // Print value of environnement variable
+					output = System.getenv(commandArray[1]);
+					output = output == null ? "" : output; // if environnement variable is null then transform output in
+															// argument empty
 				}
 
-			} else if (command.startsWith("echo ") || command.equals("echo")) {
+			} else if (commandArray[0].equals("echo")) {
 				// This command is used to reject echo elements whose arguments are not spaced
 				// between echo and the 1st argument.
-				output = !command.trim().equals("echo") ? command.substring("echo ".length()).trim() : "";
+				output = commandArray.length > 1 ? commandArray[1] : "";
 
 			} else {
 				output = "Command '" + command + "' not found.";
