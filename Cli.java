@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Map;
 
 public class Cli {
@@ -15,7 +14,7 @@ public class Cli {
 			String command = scanner.nextLine(); // Get input from console as a string
 			String[] commandArray = command.trim().split(" ", 2);
 			String output = ""; // A variable named output of type String
-			if (Arrays.asList("exit", "logout").contains(commandArray[0])) {
+			if (commandArray[0].equals("exit") || commandArray[0].equals("logout")) {
 				break;
 				
 			} else if (commandArray[0].equals("date")) {
@@ -47,20 +46,27 @@ public class Cli {
 					output = System.getenv(commandArray[1]);
 					output = output == null ? "" : output; // if environnement variable is null then transform output in
 															// argument empty
-				} else {
-					Map<String, String> varEnv = System.getenv();
-					for( String key : varEnv.keySet() ) {
-						output += key + "=" + varEnv.get( key ).toString() + "\n";
+				} else {  // if not arguments write 
+					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array with a key and a value linked to the key.
+					for( String key : varEnv.keySet() ) { // 
+						output += key + "=" + varEnv.get( key ).toString() + System.getProperty("line.separator" );
 					}
 				}
 
-			} else if (Arrays.asList("echo", "print").contains(commandArray[0])) {
+			} else if (commandArray[0].equals("echo") || commandArray[0].equals("print")) {
 				// This command is used to reject echo elements whose arguments are not spaced
 				// between echo and the 1st argument.
 				output = commandArray.length > 1 ? commandArray[1] : "";
 
+			}  else if (commandArray[0].equals("ls")) {
+				if (commandArray.length > 1) { // Print value of environnement variable
+					
+				} else {  // if not arguments write 
+					
+				}
 			} else {
-				output = "Command '" + command + "' not found.";
+				
+				output = commandArray[0].equals("") ? "Please enter your order!" : "Command '" + command.trim() + "' not found.";
 			}
 
 			System.out.println(output); // Print with new line (ln)
