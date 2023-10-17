@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Map;
 
 public class Cli {
 
@@ -13,28 +15,28 @@ public class Cli {
 			String command = scanner.nextLine(); // Get input from console as a string
 			String[] commandArray = command.trim().split(" ", 2);
 			String output = ""; // A variable named output of type String
-			if (command.trim().equals("exit")) {
+			if (Arrays.asList("exit", "logout").contains(commandArray[0])) {
 				break;
-
-			} else if (command.trim().equals("date")) {
+				
+			} else if (commandArray[0].equals("date")) {
 				LocalDate formattedDateNow = LocalDate.now();
 				output = formattedDateNow.toString(); // Print the date
 
-			} else if (command.trim().equals("time")) {
+			} else if (commandArray[0].equals("time")) {
 				LocalTime formattedTimeNow = LocalTime.now();
 				output = formattedTimeNow.toString(); // Print the time
 
-			} else if (command.trim().equals("datetime")) {
+			} else if (commandArray[0].equals("datetime")) {
 				LocalDateTime formattedDateTimeNow = LocalDateTime.now();
 				output = formattedDateTimeNow.toString(); // Print the Date and Time
 
-			} else if (command.trim().equals("useraccount")) {
+			} else if (commandArray[0].equals("useraccount")) {
 				output = System.getProperty("user.name"); // Print User name
 
-			} else if (command.trim().equals("userhome")) {
+			} else if (commandArray[0].equals("userhome")) {
 				output = System.getProperty("user.home"); // Print User Home
 
-			} else if (command.trim().equals("os")) {
+			} else if (commandArray[0].equals("os")) {
 				output = System.getProperty("os.name") + " (" + System.getProperty("os.version") + ")";
 				// Print os'information
 
@@ -45,9 +47,14 @@ public class Cli {
 					output = System.getenv(commandArray[1]);
 					output = output == null ? "" : output; // if environnement variable is null then transform output in
 															// argument empty
+				} else {
+					Map<String, String> varEnv = System.getenv();
+					for( String key : varEnv.keySet() ) {
+						output += key + "=" + varEnv.get( key ).toString() + "\n";
+					}
 				}
 
-			} else if (commandArray[0].equals("echo")) {
+			} else if (Arrays.asList("echo", "print").contains(commandArray[0])) {
 				// This command is used to reject echo elements whose arguments are not spaced
 				// between echo and the 1st argument.
 				output = commandArray.length > 1 ? commandArray[1] : "";
@@ -74,5 +81,7 @@ public class Cli {
 		}
 		return System.getProperty("user.home");
 	}
+	
+	
 
 }
