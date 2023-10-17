@@ -3,6 +3,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.io.*;
 
 public class Cli {
 
@@ -49,7 +52,7 @@ public class Cli {
 				} else {  // if not arguments write 
 					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array with a key and a value linked to the key.
 					for( String key : varEnv.keySet() ) { // 
-						output += key + "=" + varEnv.get( key ).toString() + System.getProperty("line.separator" );
+						output += key + "=" + varEnv.get(key) + System.getProperty("line.separator" );
 					}
 				}
 
@@ -59,11 +62,22 @@ public class Cli {
 				output = commandArray.length > 1 ? commandArray[1] : "";
 
 			}  else if (commandArray[0].equals("ls")) {
-				if (commandArray.length > 1) { // Print value of environnement variable
-					
-				} else {  // if not arguments write 
-					
+				String argument = "./"; // Save value default if directory empty
+				if (commandArray.length > 1 ) { // Save value of directory if argument existe
+					argument = commandArray[1] ;
 				}
+				
+				File dossier=new File(argument); 
+				// le "fichier" existe et est un dossier
+				if (dossier.exists() && dossier.isDirectory()){ // Verify if directory existe
+					ArrayList<String> varList = listDirectory(argument); // If existe then create list array
+					for (String element : varList) {
+						output +=  element + System.getProperty("line.separator" );
+					}
+				} else {
+					output = "Not a directory !";
+				}
+	
 			} else {
 				
 				output = commandArray[0].equals("") ? "Please enter your order!" : "Command '" + command.trim() + "' not found.";
@@ -80,14 +94,21 @@ public class Cli {
 		System.out.println("Bye !");
 
 	}
-
-	public static String sessionName(String value) {
-		if (value == "name") {
-			return System.getProperty("user.name");
-		}
-		return System.getProperty("user.home");
-	}
 	
+	public static ArrayList<String> listDirectory(String dossier) {  // list directory and file
+		File dir  = new File(dossier);
+		File[] liste = dir.listFiles();
+		ArrayList<String> result = new ArrayList<String>();
+		for(File item : liste){
+			if(item.isDirectory()){
+				result.add("." + item.getName()); 
+			} else if(item.isFile()){ 
+				result.add(item.getName()); 
+			}  
+		}
+		Collections.sort(result); // sort list by order alphabetic
+		return result;
+	}
 	
 
 }
