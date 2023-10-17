@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.io.*;
 
 public class Cli {
@@ -106,9 +107,15 @@ public class Cli {
 				result.add(item.getName()); 
 			}  
 		}
-		Collections.sort(result); // sort list by order alphabetic
+		Collections.sort(result, new CaseInsensitiveComparator()); // sort list by order alphabetic
 		return result;
 	}
 	
+	 static class CaseInsensitiveComparator implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2) {
+            return s1.compareToIgnoreCase(s2);
+        }
+    }
 
 }
