@@ -67,21 +67,20 @@ public class Cli {
 				if (commandArray.length > 1) { // Save value of directory if argument existe
 					String argument = ""; // Save value default if directory empty
 					argument = commandArray[1];
-					argument = argument.substring(Math.max(0, argument.length() - 1)).equals(":") ? argument + "\\"
-							: argument; // If the argument ends with: the slash is added
 					File dossier = new File(argument);
 					// le "fichier" existe et est un dossier
 					if (dossier.exists() && dossier.isDirectory()) { // Verify if directory existe
 						output = listDirectory(argument); // Create list directory and file
 
-					} else {
-						output = "Not a directory !";
-					}
+					}					
+										
 				}
+				if (output.equals(""))
+							output = "Not a directory !";	
 
 			} else {
 				output = commandArray[0].equals("") ? "Please enter your comand !"
-						: "Command '" + command.trim() + "' not found.";
+						: "Command '" + commandArray[0] + "' not found.";
 			}
 
 			System.out.println(output); // Print with new line (ln)
