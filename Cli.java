@@ -107,12 +107,11 @@ public class Cli {
 				result.add(item.getName() + System.getProperty("line.separator"));
 			}
 		}
-		Collections.sort(result, new CaseInsensitiveComparator()); // sort list by order alphabetic with insensitive
-																	// case
+		Collections.sort(result, new CaseInsensitiveComparator()); // sort list by order alphabetic with insensitive case
 		String convertResult = result.toString()
-				.replace("[", "")
-				.replace("]", "")
-				.replace(", ", ""); // converts the arraylist into a String and purge the String
+										.replace("[", "")
+										.replace("]", "")
+										.replace(", ", ""); // converts the arraylist into a String and purge the String
 		return convertResult;
 	}
 
