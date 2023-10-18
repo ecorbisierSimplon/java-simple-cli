@@ -48,11 +48,11 @@ public class Cli {
 				// spaced between printenv and the 1st argument.
 				if (commandArray.length > 1) { // Print value of environnement variable
 					output = System.getenv(commandArray[1]);
-					output = output == null ? "" : output; // if environnement variable is null then transform output in
-															// argument empty
+					output = output == null ? "" : output; // if environnement variable is null 
+														   // then transform output in argument empty
 				} else { // if not arguments write
-					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array with a key and a
-																	// value linked to the key.
+					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array 
+																  // with a key and a value linked to the key.
 					for (String key : varEnv.keySet()) { //
 						output += key + "=" + varEnv.get(key) + System.getProperty("line.separator");
 					}
