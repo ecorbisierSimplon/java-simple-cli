@@ -3,8 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.io.*;
 
@@ -48,13 +47,13 @@ public class Cli {
 				// spaced between printenv and the 1st argument.
 				if (commandArray.length > 1) { // Print value of environnement variable
 					output = System.getenv(commandArray[1]);
-					output = output == null ? "" : output; // if environnement variable is null 
-														   // then transform output in argument empty
+					output = output == null ? "" : output; // if environnement variable is null
+															// then transform output in argument empty
 				} else { // if not arguments write
-					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array 
-																  // with a key and a value linked to the key.
+					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array
+																	// with a key and a value linked to the key.
 					for (String key : varEnv.keySet()) { //
-						output += key + "=" + varEnv.get(key) + System.getProperty("line.separator");
+						output += key + "=" + varEnv.get(key) + System.lineSeparator();
 					}
 				}
 
@@ -73,8 +72,7 @@ public class Cli {
 					File dossier = new File(argument);
 					// le "fichier" existe et est un dossier
 					if (dossier.exists() && dossier.isDirectory()) { // Verify if directory existe
-						output = listDirectory(argument, "directory"); // Create list directory
-						output += listDirectory(argument, "file"); // Create list file
+						output = listDirectory(argument); // Create list directory and file
 
 					} else {
 						output = "Not a directory !";
@@ -98,28 +96,32 @@ public class Cli {
 
 	}
 
-	public static String listDirectory(String dossier, String search) { // list directory and file
-		File dir = new File(dossier);
+	public static String listDirectory(String directory) { // list directory and file
+		String separator = System.lineSeparator();
+		File dir = new File(directory);
 		File[] liste = dir.listFiles();
-		ArrayList<String> result = new ArrayList<String>();
-		for (File item : liste) {
-			if ((item.isDirectory() && search == "directory") || (item.isFile() && search == "file")) {
-				result.add(item.getName() + System.getProperty("line.separator"));
-			}
-		}
-		Collections.sort(result, new CaseInsensitiveComparator()); // sort list by order alphabetic with insensitive case
-		String convertResult = result.toString()
-										.replace("[", "")
-										.replace("]", "")
-										.replace(", ", ""); // converts the arraylist into a String and purge the String
-		return convertResult;
-	}
 
-	static class CaseInsensitiveComparator implements Comparator<String> {
-		@Override
-		public int compare(String s1, String s2) {
-			return s1.compareToIgnoreCase(s2);
+		if (liste != null) {
+			/*
+			 * sorts the list alphabetically, case insensitive, with the directory first and
+			 * then the files as part 2
+			 */
+			Arrays.sort(liste, Comparator.comparing(File::isDirectory).reversed()
+					.thenComparing((file1, file2) -> file1.getName().compareToIgnoreCase(file2.getName())));
+
+			// create a StringBuilder to store sorted files
+			StringBuilder result = new StringBuilder();
+
+			// Add directory and then files in StringBuilder
+			for (File file : liste) {
+				result.append(file.getName()).append(separator);
+			}
+			return String.join("", result);
+
 		}
+
+		return "";
+
 	}
 
 }
