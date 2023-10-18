@@ -117,7 +117,6 @@ public class Cli {
 				result.append(file.getName()).append(separator);
 			}
 			return String.join("", result);
-
 		}
 
 		return "";
