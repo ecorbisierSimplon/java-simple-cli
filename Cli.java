@@ -74,11 +74,9 @@ public class Cli {
 					argument = commandArray[1];
 					File dossier = new File(argument);
 					// le "fichier" existe et est un dossier
-					if (dossier.exists() && dossier.isDirectory()) { // Verify if directory existe
+					if (dossier.exists() && dossier.isDirectory())// Verify if directory existe
 						output.append(listDirectory(argument)); // Create list directory and file
-
-					}					
-										
+											
 				}
 				if (output.length() == 0)
 							output.append("Not a directory !");	
@@ -88,10 +86,8 @@ public class Cli {
 						: "Command '" + commandArray[0] + "' not found.");
 			}
 
-			System.out.println(String.join("", output)); // Print with new line (ln)
-			// if (output != "") // If output is not empty
-				// System.out.println(); // Adds a blank line for better readability
-
+			System.out.println(output.toString()); // Print with new line (ln)
+			
 			System.out.print("> "); // Prompt
 		}
 		// Forces exit of the while loop
@@ -100,8 +96,10 @@ public class Cli {
 
 	}
 
-	public static String listDirectory(String directory) { // list directory and file
+	public static StringBuilder listDirectory(String directory) { // list directory and file
 		String separator = System.lineSeparator();
+		StringBuilder result = new StringBuilder();
+		
 		File dir = new File(directory);
 		File[] liste = dir.listFiles();
 
@@ -118,16 +116,15 @@ public class Cli {
 			);
 
 			// create a StringBuilder to store sorted files
-			StringBuilder result = new StringBuilder();
+			
 
 			// Add directory and then files in StringBuilder
 			for (File file : liste) {
 				result.append(file.getName()).append(separator);
 			}
-			return String.join("", result);
 		}
 
-		return "";
+		return result;
 
 	}
 
