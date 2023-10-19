@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Map;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.io.*;
@@ -51,12 +50,10 @@ public class Cli {
 					output.append(test == null ? "" : test); // if environnement variable is null
 															// then transform output in argument empty
 				} else { // if not arguments write
-					Map<String, String> varEnv = System.getenv(); // Transforms a string into an array
-																	// with a key and a value linked to the key.
-					for (String key : varEnv.keySet()) { //
+					for (String key : System.getenv().keySet()) { //
 						output.append(key)
 								.append("=")
-								.append(varEnv.get(key))
+								.append(System.getenv().get(key))
 								.append(System.lineSeparator());
 					}
 				}
