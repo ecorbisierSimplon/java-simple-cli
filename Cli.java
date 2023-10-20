@@ -5,6 +5,9 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class Cli {
 
@@ -17,8 +20,11 @@ public class Cli {
 			// String command = scanner.nextLine(); // Get input from console as a string
 			CommandLine commandLine = new CommandLine(scanner.nextLine());
 			String command = commandLine.getCommand();
-			String argument = commandLine.getArgument();
-			Boolean hasArgument = commandLine.hasArgument();
+			// Commands commands = new Commands();
+
+			// ******* CES ELEMENT SERONT UTILISER DANS Commands
+			// String argument = commandLine.getArgument();
+			// Boolean hasArgument = commandLine.hasArgument();
 
 			String output = "";
 
@@ -28,76 +34,38 @@ public class Cli {
 			if (command.equals("exit") || command.equals("logout")) {
 				break;
 
-			} else if (command.equals("date")) {
-				output = LocalDate.now().toString();// formattedDateNow); // Print the date
-
-			} else if (command.equals("time")) {
-				output = LocalDate.now().toString(); // Print the time
-
-			} else if (command.equals("datetime")) {
-				output = LocalDateTime.now().toString(); // Print the Date and Time
-
-			} else if (command.equals("useraccount")) {
-				output = System.getProperty("user.name"); // Print User name
-
-			} else if (command.equals("userhome")) {
-				output = System.getProperty("user.home"); // Print User Home
-
-			} else if (command.equals("os")) {
-				output = System.getProperty("os.name")
-						+ " ("
-						+ System.getProperty("os.version")
-						+ ")";
-				// Print os'information
-
-			} else if (command.equals("printenv")) {
-				// This command is used to reject printenv elements whose arguments are not
-				// spaced between printenv and the 1st argument.
-				if (hasArgument) { // Print value of environnement variable
-					String test = System.getenv(argument);
-					output = test == null ? "" : test; // if environnement variable is null
-														// then transform output in argument empty
-				} else { // if not arguments write
-					StringBuilder outputBuild = new StringBuilder();
-					for (String key : System.getenv().keySet()) { //
-						outputBuild.append(key)
-								.append("=")
-								.append(System.getenv().get(key))
-								.append(sep);
-					}
-					output = outputBuild.toString();
-				}
-
-			} else if (command.equals("echo") || command.equals("print")) {
-				// This command is used to reject echo elements whose arguments are not spaced
-				// between echo and the 1st argument.
-				output = hasArgument ? argument : "";
-
-			} else if (command.equals("ls")) {
-
-				if (hasArgument) { // Save value of directory if argument existe
-					File dossier = new File(argument);
-
-					// le "fichier" existe et est un dossier
-					if (dossier.exists() && dossier.isDirectory()) {// Verify if directory existe
-						// listDirectory(output, argument); // Create list directory and file
-						File dir = new File(argument);
-						File[] liste = dir.listFiles();
-						StringBuilder outputBuild = new StringBuilder();
-						if (liste != null) {
-							// Add directory and then files in StringBuilder
-							for (File file : liste) {
-								outputBuild.append(file.getName()).append(sep);
-							}
-							output = outputBuild.toString();
-						}
-					}
-				}
-				if (output.equals(""))
-					output = "Not a directory !";
-
 			} else {
-				output = "Command '" + command + "' not found.";
+				String className = "Commands";
+				String methodName = command;
+				try {
+					// Obtenir la classe
+					Class<?> clazz = Class.forName(className);
+
+					// Obtenir le constructeur approprié (par exemple, un constructeur avec des
+					// arguments)
+					Constructor<?> constructor = clazz.getDeclaredConstructor();
+
+					// Activer l'accès au constructeur si nécessaire (si le constructeur est privé,
+					// etc.)
+					constructor.setAccessible(true);
+
+					// Créer une instance en utilisant le constructeur et en fournissant les
+					// arguments appropriés
+					Object instance = constructor.newInstance();
+
+					// Obtenir la méthode à partir de la classe
+					Method method = clazz.getMethod(methodName, CommandLine.class);
+
+					// Appeler la méthode
+					Object result = method.invoke(instance, commandLine);
+					output = (String) result;
+
+				} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+						| InstantiationException | InvocationTargetException e) {
+					// e.printStackTrace();
+					output = "Command '" + command + "' not found.";
+				}
+
 			}
 
 			System.out.println(output.toString()); // Print with new line (ln)
