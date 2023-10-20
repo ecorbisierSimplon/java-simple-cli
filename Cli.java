@@ -31,25 +31,22 @@ public class Cli {
 				String className = "Commands";
 				String methodName = command;
 				try {
-					// Obtenir la classe
-					Class<?> clazz = Class.forName(className);
+					// Get the class
+					Class<?> myClass = Class.forName(className);
 
-					// Obtenir le constructeur approprié (par exemple, un constructeur avec des
-					// arguments)
-					Constructor<?> constructor = clazz.getDeclaredConstructor();
+					// Get the constructor
+					Constructor<?> constructor = myClass.getDeclaredConstructor();
 
-					// Activer l'accès au constructeur si nécessaire (si le constructeur est privé,
-					// etc.)
+					// Activate the constructor
 					constructor.setAccessible(true);
 
-					// Créer une instance en utilisant le constructeur et en fournissant les
-					// arguments appropriés
+					// Create instance
 					Object instance = constructor.newInstance();
 
-					// Obtenir la méthode à partir de la classe
-					Method method = clazz.getMethod(methodName, CommandLine.class);
+					// Get the method of the class
+					Method method = myClass.getMethod(methodName, CommandLine.class);
 
-					// Appeler la méthode
+					// Call the method with the arguments
 					Object result = method.invoke(instance, commandLine);
 					output = (String) result;
 
