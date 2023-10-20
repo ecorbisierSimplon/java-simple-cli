@@ -1,10 +1,4 @@
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,7 +6,6 @@ import java.lang.reflect.Method;
 public class Cli {
 
 	public static void main(String[] args) {
-		String sep = System.lineSeparator();
 		Scanner scanner = new Scanner(System.in); // Listen to the standard input (console)
 
 		System.out.print("> "); // Prompt
