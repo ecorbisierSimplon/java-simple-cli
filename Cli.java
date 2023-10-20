@@ -9,81 +9,99 @@ import java.io.*;
 public class Cli {
 
 	public static void main(String[] args) {
+		String sep = System.lineSeparator();
 		Scanner scanner = new Scanner(System.in); // Listen to the standard input (console)
 
 		System.out.print("> "); // Prompt
 		while (true) { // Infinite loop
-			String command = scanner.nextLine(); // Get input from console as a string
-			String[] commandArray = command.trim().split(" ", 2);
-			StringBuilder output = new StringBuilder();
-			
-			if (commandArray[0].equals("exit") || commandArray[0].equals("logout")) {
+			// String command = scanner.nextLine(); // Get input from console as a string
+			CommandLine commandLine = new CommandLine(scanner.nextLine());
+			String command = commandLine.getCommand();
+			String argument = commandLine.getArgument();
+			Boolean hasArgument = commandLine.hasArgument();
+
+			String output = "";
+
+			// String[] commandArray = command.trim().split(" ", 2);
+			// StringBuilder output = new StringBuilder();
+
+			if (command.equals("exit") || command.equals("logout")) {
 				break;
 
-			} else if (commandArray[0].equals("date")) {
-				output.append(LocalDate.now());//formattedDateNow); // Print the date
+			} else if (command.equals("date")) {
+				output = LocalDate.now().toString();// formattedDateNow); // Print the date
 
-			} else if (commandArray[0].equals("time")) {
-				output.append(LocalDate.now()); // Print the time
+			} else if (command.equals("time")) {
+				output = LocalDate.now().toString(); // Print the time
 
-			} else if (commandArray[0].equals("datetime")) {
-				output.append(LocalDateTime.now()); // Print the Date and Time
+			} else if (command.equals("datetime")) {
+				output = LocalDateTime.now().toString(); // Print the Date and Time
 
-			} else if (commandArray[0].equals("useraccount")) {
-				output.append(System.getProperty("user.name")); // Print User name
+			} else if (command.equals("useraccount")) {
+				output = System.getProperty("user.name"); // Print User name
 
-			} else if (commandArray[0].equals("userhome")) {
-				output.append(System.getProperty("user.home")); // Print User Home
+			} else if (command.equals("userhome")) {
+				output = System.getProperty("user.home"); // Print User Home
 
-			} else if (commandArray[0].equals("os")) {
-				output.append(System.getProperty("os.name"))
-					  .append(" (")
-					  .append(System.getProperty("os.version"))
-					  .append(")");
+			} else if (command.equals("os")) {
+				output = System.getProperty("os.name")
+						+ " ("
+						+ System.getProperty("os.version")
+						+ ")";
 				// Print os'information
 
-			} else if (commandArray[0].equals("printenv")) {
+			} else if (command.equals("printenv")) {
 				// This command is used to reject printenv elements whose arguments are not
 				// spaced between printenv and the 1st argument.
-				if (commandArray.length > 1) { // Print value of environnement variable
-					String test = System.getenv(commandArray[1]);
-					output.append(test == null ? "" : test); // if environnement variable is null
-															// then transform output in argument empty
+				if (hasArgument) { // Print value of environnement variable
+					String test = System.getenv(argument);
+					output = test == null ? "" : test; // if environnement variable is null
+														// then transform output in argument empty
 				} else { // if not arguments write
+					StringBuilder outputBuild = new StringBuilder();
 					for (String key : System.getenv().keySet()) { //
-						output.append(key)
+						outputBuild.append(key)
 								.append("=")
 								.append(System.getenv().get(key))
-								.append(System.lineSeparator());
+								.append(sep);
 					}
+					output = outputBuild.toString();
 				}
 
-			} else if (commandArray[0].equals("echo") || commandArray[0].equals("print")) {
+			} else if (command.equals("echo") || command.equals("print")) {
 				// This command is used to reject echo elements whose arguments are not spaced
 				// between echo and the 1st argument.
-				output.append(commandArray.length > 1 ? commandArray[1] : "");
+				output = hasArgument ? argument : "";
 
-			} else if (commandArray[0].equals("ls")) {
+			} else if (command.equals("ls")) {
 
-				if (commandArray.length > 1) { // Save value of directory if argument existe
-					String argument = ""; // Save value default if directory empty
-					argument = commandArray[1];
+				if (hasArgument) { // Save value of directory if argument existe
 					File dossier = new File(argument);
+
 					// le "fichier" existe et est un dossier
-					if (dossier.exists() && dossier.isDirectory())// Verify if directory existe
-						listDirectory(output, argument); // Create list directory and file
-											
+					if (dossier.exists() && dossier.isDirectory()) {// Verify if directory existe
+						// listDirectory(output, argument); // Create list directory and file
+						File dir = new File(argument);
+						File[] liste = dir.listFiles();
+						StringBuilder outputBuild = new StringBuilder();
+						if (liste != null) {
+							// Add directory and then files in StringBuilder
+							for (File file : liste) {
+								outputBuild.append(file.getName()).append(sep);
+							}
+							output = outputBuild.toString();
+						}
+					}
 				}
-				if (output.length() == 0)
-						output.append("Not a directory !");	
+				if (output.equals(""))
+					output = "Not a directory !";
 
 			} else {
-				output.append(commandArray[0].equals("") ? "Please enter your comand !"
-						: "Command '" + commandArray[0] + "' not found.");
+				output = "Command '" + command + "' not found.";
 			}
 
 			System.out.println(output.toString()); // Print with new line (ln)
-			
+
 			System.out.print("> "); // Prompt
 		}
 		// Forces exit of the while loop
@@ -92,28 +110,4 @@ public class Cli {
 
 	}
 
-	public static void listDirectory(StringBuilder output, String directory) { // list directory and file
-		String separator = System.lineSeparator();
-		
-		File dir = new File(directory);
-		File[] liste = dir.listFiles();
-
-		if (liste != null) {
-			/*
-			 * sorts the list alphabetically, case insensitive, with the directory first and
-			 * then the files as part 2
-			 */
-			Arrays.sort(liste, Comparator.comparing(File::isDirectory)
-					.reversed()
-					.thenComparing((file1, file2) -> file1.getName()
-						.compareToIgnoreCase(file2.getName())
-					)
-			);
-
-			// Add directory and then files in StringBuilder
-			for (File file : liste) {
-				output.append(file.getName()).append(separator);
-			}
-		}
-	}
 }
