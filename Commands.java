@@ -25,10 +25,9 @@ public class Commands {
 	}
 
 	public static String os(CommandLine commandLine) {
-		return System.getProperty("os.name")
-				+ " ("
-				+ System.getProperty("os.version")
-				+ ")";
+		String name = System.getProperty("os.name");
+		String version = System.getProperty("os.version");
+		return name + " (" + version + ")";
 		// Print os'information
 	}
 
