@@ -1,7 +1,4 @@
 import java.util.Scanner;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class Cli {
 
@@ -12,6 +9,7 @@ public class Cli {
 		while (true) { // Infinite loop
 			// String command = scanner.nextLine(); // Get input from console as a string
 			CommandLine commandLine = new CommandLine(scanner.nextLine());
+			Commands commands = new Commands();
 			String command = commandLine.getCommand();
 			// Commands commands = new Commands();
 
@@ -21,40 +19,31 @@ public class Cli {
 
 			String output = "";
 
-			// String[] commandArray = command.trim().split(" ", 2);
-			// StringBuilder output = new StringBuilder();
-
 			if (command.equals("exit") || command.equals("logout")) {
 				break;
 
+			} else if (command.equals("date")) {
+				output = commands.date(commandLine);
+			} else if (command.equals("time")) {
+				output = commands.time(commandLine);
+			} else if (command.equals("datetime")) {
+				output = commands.datetime(commandLine);
+			} else if (command.equals("useraccount")) {
+				output = commands.useraccount(commandLine);
+			} else if (command.equals("userhome")) {
+				output = commands.userhome(commandLine);
+			} else if (command.equals("os")) {
+				output = commands.os(commandLine);
+			} else if (command.equals("printenv")) {
+				output = commands.printenv(commandLine);
+			} else if (command.equals("echo")) {
+				output = commands.echo(commandLine);
+			} else if (command.equals("print")) {
+				output = commands.print(commandLine);
+			} else if (command.equals("ls")) {
+				output = commands.ls(commandLine);
 			} else {
-				String className = "Commands";
-				String methodName = command;
-				try {
-					// Get the class
-					Class<?> myClass = Class.forName(className);
-
-					// Get the constructor
-					Constructor<?> constructor = myClass.getDeclaredConstructor();
-
-					// Activate the constructor
-					constructor.setAccessible(true);
-
-					// Create instance
-					Object instance = constructor.newInstance();
-
-					// Get the method of the class
-					Method method = myClass.getMethod(methodName, CommandLine.class);
-
-					// Call the method with the arguments
-					Object result = method.invoke(instance, commandLine);
-					output = (String) result;
-
-				} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-						| InstantiationException | InvocationTargetException e) {
-					// e.printStackTrace();
-					output = "Command '" + command + "' not found.";
-				}
+				output = "Command '" + command + "' not found.";
 
 			}
 

@@ -20,6 +20,4 @@ public class CommandLine {
 		return !argument.isEmpty();
 	}
 	
-	
-	
 }
