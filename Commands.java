@@ -1,6 +1,7 @@
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Commands {
 
@@ -9,7 +10,7 @@ public class Commands {
 	}
 
 	public static String time(CommandLine commandLine) {
-		return LocalDate.now().toString(); // Print the time
+		return LocalTime.now().toString(); // Print the time
 	}
 
 	public static String datetime(CommandLine commandLine) {

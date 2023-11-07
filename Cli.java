@@ -9,13 +9,8 @@ public class Cli {
 		while (true) { // Infinite loop
 			// String command = scanner.nextLine(); // Get input from console as a string
 			CommandLine commandLine = new CommandLine(scanner.nextLine());
-			Commands commands = new Commands();
-			String command = commandLine.getCommand();
-			// Commands commands = new Commands();
 
-			// ******* CES ELEMENT SERONT UTILISER DANS Commands
-			// String argument = commandLine.getArgument();
-			// Boolean hasArgument = commandLine.hasArgument();
+			String command = commandLine.getCommand();
 
 			String output = "";
 
@@ -23,31 +18,30 @@ public class Cli {
 				break;
 
 			} else if (command.equals("date")) {
-				output = commands.date(commandLine);
+				output = Commands.date(commandLine);
 			} else if (command.equals("time")) {
-				output = commands.time(commandLine);
+				output = Commands.time(commandLine);
 			} else if (command.equals("datetime")) {
-				output = commands.datetime(commandLine);
+				output = Commands.datetime(commandLine);
 			} else if (command.equals("useraccount")) {
-				output = commands.useraccount(commandLine);
+				output = Commands.useraccount(commandLine);
 			} else if (command.equals("userhome")) {
-				output = commands.userhome(commandLine);
+				output = Commands.userhome(commandLine);
 			} else if (command.equals("os")) {
-				output = commands.os(commandLine);
+				output = Commands.os(commandLine);
 			} else if (command.equals("printenv")) {
-				output = commands.printenv(commandLine);
+				output = Commands.printenv(commandLine);
 			} else if (command.equals("echo")) {
-				output = commands.echo(commandLine);
+				output = Commands.echo(commandLine);
 			} else if (command.equals("print")) {
-				output = commands.print(commandLine);
+				output = Commands.print(commandLine);
 			} else if (command.equals("ls")) {
-				output = commands.ls(commandLine);
+				output = Commands.ls(commandLine);
 			} else {
 				output = "Command '" + command + "' not found.";
-
 			}
 
-			System.out.println(output.toString()); // Print with new line (ln)
+			System.out.println(output); // Print with new line (ln)
 
 			System.out.print("> "); // Prompt
 		}
