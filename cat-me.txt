@@ -1,0 +1,5 @@
+Content of the cat-me text file
+Second line
+Third line
+Fourth line
+Last line of the file

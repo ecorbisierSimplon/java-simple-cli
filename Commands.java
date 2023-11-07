@@ -1,4 +1,4 @@
-import java.io.File;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -57,10 +57,6 @@ public class Commands {
 		return commandLine.hasArgument() ? commandLine.getArgument() : "";
 	}
 
-	public static String print(CommandLine commandLine) {
-		return commandLine.hasArgument() ? commandLine.getArgument() : "";
-	}
-
 	public static String ls(CommandLine commandLine) {
 
 		if (commandLine.hasArgument()) { // Save value of directory if argument existe
@@ -71,8 +67,9 @@ public class Commands {
 				// listDirectory(output, argument); // Create list directory and file
 				File dir = new File(commandLine.getArgument());
 				File[] liste = dir.listFiles();
-				StringBuilder outputBuild = new StringBuilder();
+
 				if (liste != null) {
+					StringBuilder outputBuild = new StringBuilder();
 					// Add directory and then files in StringBuilder
 					for (File file : liste) {
 						outputBuild.append(file.getName()).append(System.lineSeparator());
@@ -85,4 +82,30 @@ public class Commands {
 		return "Not a directory !";
 	}
 
+	public static String cat(CommandLine commandLine) {
+		if (!commandLine.hasArgument()) {
+			return "Please specify a path to a text file to read!";
+		}
+
+		File fileAsRead = new File(commandLine.getArgument());
+
+		if (!fileAsRead.exists()) {
+			return "Error reading file";
+		}
+		try (BufferedReader br = new BufferedReader(new FileReader(fileAsRead))) {
+			StringBuilder outputBuild = new StringBuilder();
+			String line;
+			int i = 1;
+
+			while ((line = br.readLine()) != null) {
+				outputBuild.append(i + ": " + line + System.lineSeparator());
+				i++;
+			}
+			return outputBuild.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "Error reading file";
+		}
+
+	}
 }

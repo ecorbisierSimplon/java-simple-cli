@@ -31,12 +31,12 @@ public class Cli {
 				output = Commands.os(commandLine);
 			} else if (command.equals("printenv")) {
 				output = Commands.printenv(commandLine);
-			} else if (command.equals("echo")) {
+			} else if (command.equals("echo") || command.equals("print")) {
 				output = Commands.echo(commandLine);
-			} else if (command.equals("print")) {
-				output = Commands.print(commandLine);
 			} else if (command.equals("ls")) {
 				output = Commands.ls(commandLine);
+			} else if (command.equals("cat")) {
+				output = Commands.cat(commandLine);
 			} else {
 				output = "Command '" + command + "' not found.";
 			}
