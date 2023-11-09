@@ -37,6 +37,8 @@ public class Cli {
 				output = Commands.ls(commandLine);
 			} else if (command.equals("cat")) {
 				output = Commands.cat(commandLine);
+			} else if (command.equals("help")) {
+				output = Commands.help(commandLine);
 			} else {
 				output = "Command '" + command + "' not found.";
 			}

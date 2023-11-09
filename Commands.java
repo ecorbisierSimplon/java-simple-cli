@@ -108,4 +108,71 @@ public class Commands {
 		}
 
 	}
+
+	public static String help(CommandLine commandLine) {
+		String lineSep = System.lineSeparator();
+		if (!commandLine.hasArgument()) {
+			return "Command list :" + lineSep +
+					" - cat" + lineSep +
+					" - date" + lineSep +
+					" - datetime" + lineSep +
+					" - exit" + lineSep +
+					" - echo" + lineSep +
+					" - print" + lineSep +
+					" - ls" + lineSep +
+					" - logout" + lineSep +
+					" - os" + lineSep +
+					" - printenv" + lineSep +
+					" - time" + lineSep +
+					" - useraccount" + lineSep +
+					" - userhome" + lineSep +
+					"Type help 'command' to get instructions !";
+		}
+
+		switch (commandLine.getArgument()) {
+			case "help":
+				return " - with name command :" + lineSep +
+						"prints the instructions for the command." + lineSep +
+						" - without name command :" + lineSep +
+						"prints the command's list.";
+			case "cat":
+				return "cat 'file name' :" + lineSep + "displays the contents of a text file.";
+			case "datetime":
+				return "datetime :" + lineSep
+						+ "prints the current date and time in format in format '2023-10-12T10:41:39.576986400'.";
+			case "exit":
+				return "exit :" + lineSep + "quit the program";
+			case "echo":
+				return "echo 'with text' :" + lineSep + "prints all the arguments passed to the command.";
+			case "print":
+				return "print 'with text' :" + lineSep
+						+ "prints all the arguments passed to the command. This is alias of 'echo'.";
+			case "ls":
+				return "ls 'directory':" + lineSep +
+						"prints the content (only names of files and directory) of a directory." + lineSep +
+						"If argument is './', ls prints the content of a current directory.";
+			case "logout":
+				return "logout :" + lineSep + "quit the program.";
+			case "os":
+				return "os :" + lineSep + "prints the operating system name and version, example : Windows 10 (10.0).";
+			case "printenv":
+				return "printenv :" + lineSep +
+						" - with name of the environment variable :" + lineSep +
+						"prints the value of the specified environment variable." + lineSep +
+						" - without name of the environment variable :" + lineSep +
+						"prints the value all environment variable.";
+			case "time":
+				return "time :" + lineSep + "prints the current time in format '10:41:39.576986400'";
+			case "useraccount":
+				return "useraccount :" + lineSep + "prints the user account name.";
+			case "date":
+				return "date :" + lineSep + "prints today's date in format '2023-10-12'.";
+			case "userhome":
+				return "userhome :" + lineSep + "prints the user home directory.";
+			default:
+				return "'" + commandLine.getArgument() + "' is not command valid !";
+		}
+
+	}
+
 }
